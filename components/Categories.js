@@ -1,8 +1,26 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CategoryCard from "./CategoryCard";
+import sanityClient from "../sanity";
+import { urlFor } from "../sanity";
 
 const Categories = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    sanityClient
+      .fetch(
+        `
+    *[_type =="category"]
+    `
+      )
+      .then((data) => {
+        setCategories(data);
+      });
+  }, []);
+
+  console.log(categories);
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -12,30 +30,13 @@ const Categories = () => {
       horizontal
       showsHorizontalScrollIndicator={false}
     >
-      <CategoryCard
-        imgUrl="https://chickenlicken.co.za/assets/uploads/product_categories/nav/11_soulsister-specials.png"
-        title="Buns"
-      />
-      <CategoryCard
-        imgUrl="https://specialsza.co.za/wp-content/uploads/2021/12/a3-1.jpg"
-        title="Chicken"
-      />
-      <CategoryCard
-        imgUrl="https://chickenlicken.co.za/assets/uploads/product_categories/nav/1_just-hotwings.png"
-        title="Sides"
-      />
-      <CategoryCard
-        imgUrl="https://chickenlicken.co.za/assets/uploads/product_categories/nav/11_soulsister-specials.png"
-        title="Buns"
-      />
-      <CategoryCard
-        imgUrl="https://specialsza.co.za/wp-content/uploads/2021/12/a3-1.jpg"
-        title="Chicken"
-      />
-      <CategoryCard
-        imgUrl="https://chickenlicken.co.za/assets/uploads/product_categories/nav/1_just-hotwings.png"
-        title="Sides"
-      />
+      {categories.map((category) => {
+        <CategoryCard
+          key={category._id}
+          imgUrl={category.image}
+          title={category.name}
+        />;
+      })}
     </ScrollView>
   );
 };

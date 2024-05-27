@@ -36,7 +36,7 @@ export default defineType({
     }),
     defineField({
       name: 'price',
-      title: 'Price of the Dish in GBP',
+      title: 'Price of the Dish in Rands',
       type: 'number',
       options: {
         hotspot: true,

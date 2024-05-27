@@ -42,7 +42,7 @@ export default defineType({
     defineField({
       name: 'long',
       title: 'Longitude of Resturant',
-      type: 'datetime',
+      type: 'number',
     }),
     defineField({
       name: 'address',

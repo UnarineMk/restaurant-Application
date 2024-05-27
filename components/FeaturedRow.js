@@ -1,9 +1,36 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRightIcon } from "react-native-heroicons/outline";
 import RestaurantMenu from "../components/RestaurantMenu";
+import sanityClient from "../sanity";
 
 const FeaturedRow = ({ title, description, id }) => {
+  const [restaurantMenu, setRestaurantMenu] = useState([]);
+  useEffect(() => {
+    sanityClient
+      .fetch(
+        `
+    *[_type =="featured" && _id == $id] {
+      ...,
+      restaurantMenu[]->{
+      ...,
+      dishes[]->,
+      type->{
+        name
+      }
+  },
+  
+  }[0]
+    `,
+        { id }
+      )
+      .then((data) => {
+        setRestaurantMenu(data?.restaurantMenu);
+      });
+  }, [id]);
+
+  // console.log(restaurantMenu);
+
   return (
     <View>
       <View className="mt-4 flex-row items-center justify-between px-4">
@@ -21,44 +48,21 @@ const FeaturedRow = ({ title, description, id }) => {
         showsHorizontalScrollIndicator={false}
         className="pt-4"
       >
-        <RestaurantMenu
-          id={123}
-          imgUrl="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          title="Chicken Chicken"
-          rating={4.5}
-          genre="South African"
-          address="23 Pretoria Road"
-          short_description="eat eat tea your chicken , just eat the chicken"
-          dishes={[]}
-          long={20}
-          lat={0}
-        />
-
-        <RestaurantMenu
-          id={123}
-          imgUrl="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          title="Chicken Chicken"
-          rating={4.5}
-          genre="South African"
-          address="23 Pretoria Road"
-          short_description="eat eat tea your chicken , just eat the chicken"
-          dishes={[]}
-          long={20}
-          lat={0}
-        />
-
-        <RestaurantMenu
-          id={123}
-          imgUrl="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          title="Chicken Chicken"
-          rating={4.5}
-          genre="South African"
-          address="23 Pretoria Road"
-          short_description="eat eat tea your chicken , just eat the chicken"
-          dishes={[]}
-          long={20}
-          lat={0}
-        />
+        {restaurantMenu?.map((restaurant) => (
+          <RestaurantMenu
+            key={restaurant._id}
+            id={restaurant._id}
+            imgUrl={restaurant.image}
+            title={restaurant.name}
+            rating={restaurant.rating}
+            genre={restaurant.type?.name}
+            address={restaurant.address}
+            short_description={restaurant.short_description}
+            dishes={restaurant.dishes}
+            long={restaurant.long}
+            lat={restaurant.lat}
+          />
+        ))}
       </ScrollView>
     </View>
   );
