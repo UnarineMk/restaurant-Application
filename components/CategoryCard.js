@@ -1,5 +1,12 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextComponent,
+} from "react-native";
 import React from "react";
+import { urlFor } from "../sanity";
 
 const CategoryCard = ({ imgUrl, title }) => {
   return (
@@ -10,7 +17,7 @@ const CategoryCard = ({ imgUrl, title }) => {
         }}
         className="h-20 w-20 rounded bg-black"
       />
-      <Text className="absolute font-bold text-orange-500 pl-1">{title}</Text>
+      <Text className="absolute font-bold text-gray-200 pl-1">{title}</Text>
     </TouchableOpacity>
   );
 };
