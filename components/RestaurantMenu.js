@@ -22,7 +22,7 @@ const RestaurantMenu = ({
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("RestaurantMenu", {
-          key,
+          // key,
           id,
           imgUrl,
           title,
