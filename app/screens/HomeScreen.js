@@ -50,13 +50,13 @@ const HomeScreen = () => {
   //console.log(featuredCategories);
 
   return (
-    <SafeAreaView className="bg-orange-500 pt-5">
+    <SafeAreaView className="bg-stone-300 pt-5">
       {/* Header */}
 
       <View className="flex-row pb-3 items-center mx-2 space-x-2 px-2">
         <Image
           source={{
-            uri: "https://specialsza.co.za/wp-content/uploads/2021/12/a3-1.jpg",
+            uri: "https://static.vecteezy.com/system/resources/previews/006/735/470/original/vintage-grilled-barbecue-logo-retro-bbq-fire-grill-food-and-restaurant-icon-red-fire-icon-vector.jpg",
           }}
           className="h-7 w-7 bg-transparent p-4 rounded-full"
         />
